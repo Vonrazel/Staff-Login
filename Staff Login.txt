@@ -1,67 +1,59 @@
-using Google.Protobuf.WellKnownTypes;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+package bOn;
 
-namespace Anytimefit
-{
-    public partial class Mebership : Form
-    {
-        Backbone bac = new Backbone();
+import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-        public Mebership()
-        {
-            InitializeComponent();
+
+public class awit {
+
+    public static void main(String[] args) {
+        int maxAttempts = 3;
+        int attempts = 0;
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (attempts < maxAttempts) {
+            System.out.println("Enter Employer Number: ");
+            String enteredAdmin = scanner.nextLine();
+
+            System.out.println("Enter Pin: ");
+            String enteredPass = scanner.nextLine();
+
+            if ("123".equals(enteredAdmin) && "123".equals(enteredPass)) {
+                System.out.println("Login Success");
+                printTimestamp();
+
+                while (true) {
+                    System.out.print("Do you want to log out? (yes/no): ");
+                    String logoutChoice = scanner.nextLine().toLowerCase();
+
+                    if ("yes".equals(logoutChoice)) {
+                        System.out.println("Logout Success");
+                        printTimestamp();
+                        break;
+                    } else {
+                        System.out.println("Continuing session...");
+                    }
+                }
+                break;
+            } else {
+                System.out.println("Incorrect Password. Please try again.");
+                attempts++;
+            }
         }
 
-        private void Mebership_Load(object sender, EventArgs e)
-        {
-            this.ControlBox = false;
+        if (attempts == maxAttempts) {
+            System.out.println("Too many incorrect attempts. Access denied.");
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
+        scanner.close();
+    }
 
-
-            SharedVariable.MemId = int.Parse(textBox1.Text);
-            SharedVariable.Membershiptye = textBox2.Text;
-
-            // Assuming Value is a DateTimePicker control
-            SharedVariable.Enddate = dateTimePicker1.Value;
-
-
-            bac.refreshmemberships();
-            bac.Membership(SharedVariable.MemId, SharedVariable.Membershiptye, SharedVariable.Enddate);
-
-        }
-
-
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            MemberShipView membershipview = new MemberShipView();
-            this.Close();
-            membershipview.Show();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            HomePage homepage = new HomePage();
-            this.Close();
-            homepage.Show();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+    private static void printTimestamp() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+        System.out.println("Login Time: " + formattedDateTime);
     }
 }
-
-          
